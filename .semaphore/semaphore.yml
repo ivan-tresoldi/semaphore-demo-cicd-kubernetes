@@ -41,5 +41,5 @@ blocks:
         - name: Push
           commands:
             - 'docker pull $DOCKERHUB_USERNAME/semaphore-cicd:$SEMAPHORE_WORKFLOW_ID'
-            - 'docker tag $DOCKERHUB_USERNAME/semaphore-cicd:$SEMAPHORE_WORKFLOW_ID semaphore-demo-cicd-kubernetes:latest'
+            - 'docker tag $DOCKERHUB_USERNAME/semaphore-cicd:$SEMAPHORE_WORKFLOW_ID $DOCKERHUB_USERNAME/semaphore-cicd:latest'
             - 'docker push $DOCKERHUB_USERNAME/semaphore-cicd:latest'
