@@ -17,7 +17,7 @@ blocks:
         - name: docker build
           commands:
             - 'docker pull $DOCKERHUB_USERNAME/semaphore-cicd:latest || true'
-            - 'docker build --cache-from $DOCKERHUB_USERNAME/semaphore-cicd:latest -t $DOCKERHUB_USERNAME/semaphore-cicd:$SEMAPHORE_WORKFLOW_ID .'
+            - 'docker build --cache-from $DOCKERHUB_USERNAME/semaphore-cicd:latest -t $DOCKERHUB_USERNAME/semaphore-cicd:$SEMAPHORE_WORKFLOW_ID'
             - 'docker push $DOCKERHUB_USERNAME/semaphore-cicd:$SEMAPHORE_WORKFLOW_ID'
   - name: Test
     task:
