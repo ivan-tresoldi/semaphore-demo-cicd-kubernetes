@@ -16,31 +16,30 @@ blocks:
       jobs:
         - name: docker build
           commands:
-            - checkout
-            - 'docker pull semaphore-demo-cicd-kubernetes:latest || true'
-            - 'docker build --cache-from semaphore-demo-cicd-kubernetes:latest -t semaphore-demo-cicd-kubernetes:$SEMAPHORE_WORKFLOW_ID .'
-            - 'docker push semaphore-demo-cicd-kubernetes:$SEMAPHORE_WORKFLOW_ID'
+            - 'docker pull $DOCKERHUB_USERNAME/semaphore-cicd:latest || true'
+            - 'docker build --cache-from $DOCKERHUB_USERNAME/semaphore-cicd:latest -t $DOCKERHUB_USERNAME/semaphore-cicd:$SEMAPHORE_WORKFLOW_ID .'
+            - 'docker push $DOCKERHUB_USERNAME/semaphore-cicd:$SEMAPHORE_WORKFLOW_ID'
   - name: Test
     task:
       jobs:
         - name: Unit Test
           commands:
-            - 'docker pull semaphore-demo-cicd-kubernetes:$SEMAPHORE_WORKFLOW_ID'
-            - 'docker run -it semaphore-demo-cicd-kubernetes:$SEMAPHORE_WORKFLOW_ID npm run lint'
+            - 'docker pull $DOCKERHUB_USERNAME/semaphore-cicd:$SEMAPHORE_WORKFLOW_ID'
+            - 'docker run -it $DOCKERHUB_USERNAME/semaphore-cicd:$SEMAPHORE_WORKFLOW_ID npm run lint'
         - name: Functional Test
           commands:
             - sem-service start postgres
-            - 'docker run --net=host -it semaphore-demo-cicd-kubernetes:$SEMAPHORE_WORKFLOW_ID npm run ping'
-            - 'docker run --net=host -it semaphore-demo-cicd-kubernetes:$SEMAPHORE_WORKFLOW_ID npm run migrate'
+            - 'docker run --net=host -it $DOCKERHUB_USERNAME/semaphore-cicd:$SEMAPHORE_WORKFLOW_ID npm run ping'
+            - 'docker run --net=host -it $DOCKERHUB_USERNAME/semaphore-cicd:$SEMAPHORE_WORKFLOW_ID npm run migrate'
         - name: Integration Test
           commands:
             - sem-service start postgres
-            - 'docker run --net=host -it semaphore-demo-cicd-kubernetes:$SEMAPHORE_WORKFLOW_ID npm run test'
+            - 'docker run --net=host -it $DOCKERHUB_USERNAME/semaphore-cicd:$SEMAPHORE_WORKFLOW_ID npm run test'
   - name: Push
     task:
       jobs:
         - name: Push
           commands:
-            - 'docker pull semaphore-demo-cicd-kubernetes:$SEMAPHORE_WORKFLOW_ID'
-            - 'docker tag semaphore-demo-cicd-kubernetes:$SEMAPHORE_WORKFLOW_ID semaphore-demo-cicd-kubernetes:latest'
-            - 'docker push semaphore-demo-cicd-kubernetes:latest'
+            - 'docker pull $DOCKERHUB_USERNAME/semaphore-cicd:$SEMAPHORE_WORKFLOW_ID'
+            - 'docker tag $DOCKERHUB_USERNAME/semaphore-cicd:$SEMAPHORE_WORKFLOW_ID semaphore-demo-cicd-kubernetes:latest'
+            - 'docker push $DOCKERHUB_USERNAME/semaphore-cicd:latest'
