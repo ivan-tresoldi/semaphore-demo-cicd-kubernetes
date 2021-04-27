@@ -20,8 +20,6 @@ blocks:
             - 'docker pull semaphore-demo-cicd-kubernetes:latest || true'
             - 'docker build --cache-from semaphore-demo-cicd-kubernetes:latest -t semaphore-demo-cicd-kubernetes:$SEMAPHORE_WORKFLOW_ID .'
             - 'docker push semaphore-demo-cicd-kubernetes:$SEMAPHORE_WORKFLOW_ID'
-      secrets:
-        - name: Docker-Hub
   - name: Test
     task:
       jobs:
